@@ -48,6 +48,40 @@
             .primary-cta { @apply inline-flex items-center px-6 py-3 bg-fresh-blue text-white font-semibold rounded-lg hover:bg-fresh-blue-hover transition-all active:scale-95 shadow-lg shadow-blue-500/20; }
         }
 
+        /* Scoped styles for Newsletter Manual */
+        .newsletter-manual {
+            --manual-bg-color: #ffffff;
+            --manual-text-color: #37352f;
+            --manual-gray-bg: #f7f7f5;
+            --manual-border-color: #e9e9e7;
+            --manual-accent-blue: #0b6e99;
+        }
+
+        .dark .newsletter-manual {
+            --manual-bg-color: #191919;
+            --manual-text-color: #d1d5db;
+            --manual-gray-bg: #202020;
+            --manual-border-color: #2d2d2d;
+            --manual-accent-blue: #3b82f6;
+        }
+
+        .newsletter-manual .tab-btn {@apply px-5 py-3 border-b-2 border-transparent font-semibold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all text-sm;}
+        .newsletter-manual .tab-btn.active { @apply border-gray-900 text-gray-900 dark:border-white dark:text-white; }
+        .newsletter-manual .callout { @apply flex gap-4 p-5 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-transparent my-6 text-sm; }
+        .newsletter-manual .callout.blue { @apply bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800/30; }
+        .newsletter-manual .manifesto-box { @apply border-2 border-gray-900 dark:border-gray-600 p-6 rounded-lg mb-8; }
+        .newsletter-manual .manifesto-title { @apply text-lg font-bold border-b-2 border-gray-900 dark:border-gray-600 inline-block pb-1 mb-4 uppercase tracking-wider; }
+        .newsletter-manual .pos-card { @apply p-5 rounded-lg text-sm border; }
+        .newsletter-manual .rotation-card { @apply border rounded-xl p-5 text-center bg-white dark:bg-gray-800/50 hover:shadow-lg transition-all relative overflow-hidden; }
+        .newsletter-manual .timeline-container { @apply relative border-l-2 border-gray-200 dark:border-gray-800 ml-2 pl-6; }
+        .newsletter-manual .timeline-item {@apply mb-8 relative;}
+        .newsletter-manual .timeline-item::before { content: ''; @apply absolute -left-[31px] top-1.5 w-4 h-4 bg-white dark:bg-gray-900 border-2 border-blue-500 rounded-full; }
+        .newsletter-manual .guide-section { @apply border dark:border-gray-800 rounded-xl p-6 mb-8 bg-white dark:bg-gray-900/50; }
+        .newsletter-manual .template-area { @apply bg-gray-50 dark:bg-gray-800/50 border border-dashed dark:border-gray-700 p-5 rounded-lg font-mono text-sm leading-relaxed mt-4; }
+        .newsletter-manual .checklist-item { @apply flex items-center gap-3 p-3 border-b dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-all; }
+        .newsletter-manual .checkbox { @apply w-6 h-6 border-2 border-gray-300 dark:border-gray-600 rounded flex items-center justify-center text-transparent transition-all; }
+        .newsletter-manual .checkbox.checked { @apply bg-blue-500 border-blue-500 text-white; }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { @apply bg-transparent; }
@@ -89,6 +123,9 @@
             </a>
             <a href="#github-bot" class="sidebar-item" data-page="github-bot">
                  <i data-lucide="bot" class="w-4 h-4 mr-3 text-gray-400"></i> GitHub Automation
+            </a>
+            <a href="#newsletter-strategy" class="sidebar-item" data-page="newsletter-strategy">
+                <i data-lucide="mail" class="w-4 h-4 mr-3 text-gray-400"></i> 채널(뉴스레터) 전략
             </a>
         </nav>
 
@@ -210,6 +247,150 @@
   const content = await fetchIssue(issueId);
   return await ai.classify(content);
 }</pre>
+                </div>
+            </section>
+
+            <!-- Newsletter Strategy Section -->
+            <section id="page-newsletter-strategy" class="content-section max-w-4xl mx-auto newsletter-manual">
+                <div class="text-6xl mb-8">📬</div>
+                <h1 class="notion-h1">뉴키즈 뉴스레터 통합 매뉴얼 (v14.2)</h1>
+                <div class="text-sm text-gray-500 mb-8">Last Updated: 2026.02.20 | Start: 2026.03</div>
+
+                <div class="tabs flex border-b dark:border-gray-800 mb-8 overflow-x-auto">
+                    <button class="tab-btn active" onclick="openManualTab(event, 'manual-tab1')">1. 전략 (Strategy)</button>
+                    <button class="tab-btn" onclick="openManualTab(event, 'manual-tab2')">2. 운영 (Operation)</button>
+                    <button class="tab-btn" onclick="openManualTab(event, 'manual-tab3')">3. 작성 (Writing)</button>
+                    <button class="tab-btn" onclick="openManualTab(event, 'manual-tab4')">4. 점검 (Check)</button>
+                </div>
+
+                <!-- Tab 1: Strategy -->
+                <div id="manual-tab1" class="tab-content-manual block">
+                    <h2 class="notion-h2">1. Why This Topic? (Positioning)</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+                        <div class="pos-card bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-800/30 text-red-900 dark:text-red-200">
+                            <strong class="block mb-3">❌ Ordinary VC (Red Ocean)</strong>
+                            <ul class="space-y-1">
+                                <li>• 딱딱한 "시장 분석 리포트"</li>
+                                <li>• 잘난 척하는 "성공 스토리"</li>
+                                <li>• <strong>결과:</strong> 안 읽고 삭제됨.</li>
+                            </ul>
+                        </div>
+                        <div class="pos-card bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800/30 text-blue-900 dark:text-blue-200">
+                            <strong class="block mb-3">⭕ New Kids (Blue Ocean)</strong>
+                            <ul class="space-y-1">
+                                <li>• 말랑한 <strong>"창업가 에세이" (위로)</strong></li>
+                                <li>• 쉬운 <strong>"테크 가이드" (기회)</strong></li>
+                                <li>• <strong>결과:</strong> 저장하고 공유됨.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2 class="notion-h2">2. New Kids Manifesto</h2>
+                    <div class="manifesto-box">
+                        <span class="manifesto-title">Our Philosophy</span>
+                        <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                            <li>1. <strong>Don't Judge:</strong> 우리는 평가자가 아닙니다. 내 편이 필요한 창업가의 '팬'입니다.</li>
+                            <li>2. <strong>No Jargon:</strong> 전문 용어 뒤에 숨지 않습니다. 중학생 조카도 이해하게 씁니다.</li>
+                            <li>3. <strong>Be Helpful:</strong> 반드시 독자에게 이득(Benefit)을 줍니다.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="p-8 bg-gray-900 dark:bg-black rounded-xl text-center text-white my-8">
+                        <div class="italic text-lg mb-2">"거절당해서 힘들었는데, 뉴스레터 보고 다시 일어설 힘을 얻었습니다."</div>
+                        <div class="text-xs text-gray-500 uppercase tracking-widest">(우리가 1년 뒤 받고 싶은 댓글)</div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Operation -->
+                <div id="manual-tab2" class="tab-content-manual hidden">
+                    <div class="callout blue">
+                        <div class="text-2xl">📆</div>
+                        <div>
+                            <strong>2026년 3월 Start! (A팀부터)</strong><br>
+                            3개월에 1번만 메인 Writer가 됩니다. 나머지 2달은 <strong>완전 휴식(Zero Burden)</strong>입니다.
+                        </div>
+                    </div>
+
+                    <h2 class="notion-h2">1. 3-Month Rotation System</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div class="rotation-card border-t-4 border-t-blue-500">
+                             <div class="absolute top-0 right-0 bg-red-500 text-white text-[10px] px-2 py-1 font-bold rounded-bl-lg">START (3월)</div>
+                            <span class="text-xs font-bold text-blue-500 mb-2 block uppercase tracking-wider">3, 6, 9, 12월</span>
+                            <div class="font-bold text-lg mb-1">A. Tech Team</div>
+                            <div class="text-sm text-gray-500">완희 & 지은</div>
+                        </div>
+                        <div class="rotation-card border-t-4 border-t-orange-500">
+                            <span class="text-xs font-bold text-orange-500 mb-2 block uppercase tracking-wider">4, 7, 10, 1월</span>
+                            <div class="font-bold text-lg mb-1">B. Story Team</div>
+                            <div class="text-sm text-gray-500">병룡 & 승준</div>
+                        </div>
+                        <div class="rotation-card border-t-4 border-t-green-500">
+                            <span class="text-xs font-bold text-green-500 mb-2 block uppercase tracking-wider">5, 8, 11, 2월</span>
+                            <div class="font-bold text-lg mb-1">C. News Team</div>
+                            <div class="text-sm text-gray-500">액셀러레이팅 팀</div>
+                        </div>
+                    </div>
+
+                    <h2 class="notion-h2">2. 4-Week Timeline (Standard)</h2>
+                    <div class="timeline-container">
+                        <div class="timeline-item">
+                            <div class="text-xs font-bold text-blue-500 mb-1">Week 1 (D-25)</div>
+                            <div class="font-bold mb-2">🔔 자동 배정 & 1줄 공지</div>
+                            <div class="bg-gray-50 dark:bg-gray-800/30 p-4 rounded-lg text-sm">
+                                <span class="bg-gray-200 dark:bg-gray-700 text-[10px] px-1.5 py-0.5 rounded font-bold mr-2 uppercase">System</span> "이번 달은 A팀(완희)입니다." (자동)<br>
+                                • 주제 선정 후 슬랙에 1줄 공지 ("주제: Sora AI")
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="text-xs font-bold text-blue-500 mb-1">Week 2 (D-14)</div>
+                            <div class="font-bold mb-2">📝 완성형 초안 마감 (Draft)</div>
+                            <div class="bg-gray-50 dark:bg-gray-800/30 p-4 rounded-lg text-sm">
+                                <span class="bg-gray-200 dark:bg-gray-700 text-[10px] px-1.5 py-0.5 rounded font-bold mr-2 uppercase">Writer</span> "초안 다 썼습니다."<br>
+                                • <strong>완성된 hwp/doc 파일</strong> 제출 (메모 X)
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="text-xs font-bold text-blue-500 mb-1">Week 3 (D-7)</div>
+                            <div class="font-bold mb-2">🎨 편집 & 디자인 (Edit)</div>
+                            <div class="bg-gray-50 dark:bg-gray-800/30 p-4 rounded-lg text-sm">
+                                <span class="bg-gray-200 dark:bg-gray-700 text-[10px] px-1.5 py-0.5 rounded font-bold mr-2 uppercase">Editor</span> "디자인 입히기"<br>
+                                • 윤문, 제목 튜닝, 스티비(Tool) 세팅.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Writer's Manual -->
+                <div id="manual-tab3" class="tab-content-manual hidden">
+                    <div class="guide-section">
+                        <div class="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-900 dark:border-gray-600">
+                            <span class="text-xl font-bold">A. Tech Trend (기술 트렌드)</span>
+                            <span class="bg-blue-600 text-white text-[10px] px-3 py-1 rounded-full font-bold">완희 & 지은</span>
+                        </div>
+                        <div class="space-y-3 mb-6">
+                            <div class="border-l-4 border-blue-500 pl-4 py-1 text-sm bg-gray-50 dark:bg-gray-800/30 p-3">
+                                <span class="block text-[10px] font-bold text-gray-400 uppercase">Step 1. Context</span> "왜 지금 이 주제인가?" (호기심)
+                            </div>
+                        </div>
+                        <div class="template-area">
+                            최근 <strong>[주제]</strong>가 업계의 화두입니다. 핵심은 기술 자체가 아니라, 이것이 가져올 <strong>[비즈니스 임팩트]</strong>입니다.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Check -->
+                <div id="manual-tab4" class="tab-content-manual hidden">
+                    <h2 class="notion-h2">1. 발송 전 자가 진단</h2>
+                    <div class="border dark:border-gray-800 rounded-xl overflow-hidden mb-8">
+                        <div class="checklist-item" onclick="toggleManualCheck(this)">
+                            <div class="checkbox">✔</div>
+                            <div class="text-sm">전문 용어에 <strong>(괄호 설명)</strong>을 달았나요?</div>
+                        </div>
+                        <div class="checklist-item" onclick="toggleManualCheck(this)">
+                            <div class="checkbox">✔</div>
+                            <div class="text-sm">모바일에서 <strong>3번 스크롤</strong> 안에 읽히나요?</div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -363,6 +544,30 @@
             }
         });
 
-    </script>
+    
+        // Newsletter Manual Tab Logic
+        function openManualTab(evt, tabId) {
+            const contents = document.querySelectorAll('.tab-content-manual');
+            const btns = document.querySelectorAll('.newsletter-manual .tab-btn');
+            
+            contents.forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('block');
+            });
+            
+            btns.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById(tabId).classList.add('block');
+            evt.currentTarget.classList.add('active');
+        }
+
+        function toggleManualCheck(item) {
+            const checkbox = item.querySelector('.checkbox');
+            checkbox.classList.toggle('checked');
+            checkbox.innerHTML = checkbox.classList.contains('checked') ? '<i data-lucide="check" class="w-4 h-4"></i>' : '';
+            lucide.createIcons();
+        }
+</script>
 </body>
 </html>
