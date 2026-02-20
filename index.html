@@ -251,55 +251,57 @@
                 </div>
             </section>
 
-            <!-- Projects Section -->
-            <section id="page-projects" class="content-section max-w-4xl mx-auto">
-                <h1 class="notion-h1">프로젝트 목록</h1>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-                    <div class="group p-4 rounded-xl border dark:border-gray-800 hover:border-fresh-blue dark:hover:border-fresh-blue hover:shadow-lg transition-all cursor-pointer bg-white dark:bg-[#202020] nav-trigger" data-page="github-bot">
-                        <div class="text-3xl mb-3">🤖</div>
-                        <h3 class="font-bold text-lg group-hover:text-fresh-blue transition-colors">GitHub Automation Bot</h3>
-                        <p class="text-sm text-gray-500 mt-2">Issue 및 PR을 자동으로 분석하여 라벨링하는 고도화된 봇</p>
+                <!-- Page Dashboard -->
+                <div id="memo-dashboard" class="mt-24 p-8 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="p-2 bg-fresh-blue/10 rounded-lg text-fresh-blue">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold">메모 엔진 V2</h3>
+                            <p class="text-sm text-gray-500">HTML/CSS를 입력하면 독립된 샌드박스 페이지가 생성됩니다.</p>
+                        </div>
                     </div>
-                </div>
-            </section>
 
-            <!-- GitHub Bot Detail -->
-            <section id="page-github-bot" class="content-section max-w-4xl mx-auto">
-                <div class="p-4 bg-gray-50 dark:bg-gray-800/30 rounded-lg mb-8 inline-flex items-center text-sm text-gray-500">
-                    <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> 2025년 2월 완성
-                </div>
-                <h1 class="notion-h1">GitHub Automation Bot</h1>
-                <p class="text-gray-700 dark:text-gray-300 mb-6">
-                    이 프로젝트는 오픈소스 규모가 커짐에 따라 발생하는 관리 비용을 줄이기 위해 시작되었습니다. 
-                </p>
-                
-                <!-- Toggle Block Example -->
-                <div class="border-l-2 border-gray-200 dark:border-gray-800 pl-4 my-6">
-                    <button class="toggle-btn flex items-center gap-2 font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 rounded px-2 py-1 -ml-2 transition-colors">
-                        <i data-lucide="chevron-right" class="w-4 h-4 transition-transform toggle-icon"></i>
-                        핵심 기술 스택 펼쳐보기
-                    </button>
-                    <div class="toggle-content hidden mt-2 pl-4 text-sm text-gray-600 dark:text-gray-400">
-                        <ul class="list-disc space-y-1">
-                            <li>Node.js / TypeScript</li>
-                            <li>GitHub Desktop API</li>
-                            <li>OpenAI API (GPT-4o)</li>
-                        </ul>
-                    </div>
-                </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Create -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">메뉴 이름</label>
+                                <input type="text" id="new-page-title" placeholder="예: 디자인 초안" class="w-full px-4 py-2 rounded-lg border dark:border-gray-800 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-fresh-blue/30 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">아이콘 (Lucide)</label>
+                                <input type="text" id="new-page-icon" placeholder="예: box, image, globe" class="w-full px-4 py-2 rounded-lg border dark:border-gray-800 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-fresh-blue/30 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">HTML/CSS 코드</label>
+                                <textarea id="new-page-content" rows="8" placeholder="<style>h1 { color: blue; }</style>\n<h1>Hello Sandbox!</h1>" class="w-full px-4 py-2 rounded-lg border dark:border-gray-800 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-fresh-blue/30 text-sm font-mono"></textarea>
+                            </div>
+                            <button onclick="createNewPageDirectly()" class="w-full py-3 bg-gray-900 dark:bg-fresh-blue text-white font-bold rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                지금 즉시 구현하기
+                            </button>
+                        </div>
 
-                <h2 class="notion-h2">구현 방식</h2>
-                <div class="bg-notion-sidebar-light dark:bg-notion-sidebar-dark rounded-lg border dark:border-gray-800 overflow-hidden my-4">
-                    <div class="flex items-center justify-between px-4 py-2 bg-gray-100 dark:bg-gray-800 border-b dark:border-gray-800">
-                        <span class="text-xs font-mono text-gray-500">github-bot.ts</span>
-                        <button class="copy-btn hover:text-fresh-blue flex items-center gap-1 text-xs" data-code="async function analyzeIssue(issueId: string) {\n  const content = await fetchIssue(issueId);\n  return await ai.classify(content);\n}">
-                            <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
-                        </button>
+                        <!-- Manage -->
+                        <div class="space-y-4">
+                             <label class="block text-xs font-bold text-gray-400 uppercase mb-1">페이지 매니저</label>
+                             <div id="page-manager-list" class="space-y-2 max-h-[400px] overflow-y-auto pr-2">
+                                 <!-- Dynamic items -->
+                             </div>
+                        </div>
                     </div>
-                    <pre class="p-4 text-sm font-mono overflow-x-auto text-blue-600 dark:text-blue-400">async function analyzeIssue(issueId: string) {
-  const content = await fetchIssue(issueId);
-  return await ai.classify(content);
-}</pre>
+
+                    <div id="request-output-container" class="mt-10 hidden border-t dark:border-gray-800 pt-8">
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">📋 이 코드를 AI에게 전달하여 공용 서버에 저장하세요:</label>
+                        <div class="relative">
+                            <pre id="request-output" class="p-4 bg-gray-900 text-green-400 text-[10px] rounded-lg overflow-x-auto whitespace-pre-wrap"></pre>
+                            <button onclick="copyRequestCode()" class="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 rounded text-gray-400 transition-all">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -472,12 +474,17 @@
         const crumbCurrent = document.querySelector('#current-page-crumb');
         const navTriggers = document.querySelectorAll('.nav-trigger');
 
-        function navigateTo(pageId) {
-            const currentSections = document.querySelectorAll('.content-section');
-            const currentSidebarItems = document.querySelectorAll('.sidebar-item[data-page]');
+        // Global Pages Storage (Seeded for persistence)
+        const staticPages = [
+            { id: 'home', title: '홈', icon: 'home' },
+            { id: 'newsletter-strategy', title: '채널(뉴스레터) 전략', icon: 'mail' }
+        ];
 
-            // Update UI: Hide all, Show selected
-            currentSections.forEach(sec => {
+        function navigateTo(pageId) {
+            const allSections = document.querySelectorAll('.content-section');
+            const allSidebarItems = document.querySelectorAll('.sidebar-item[data-page]');
+
+            allSections.forEach(sec => {
                 sec.classList.remove('content-section-active');
                 if (sec.id === `page-${pageId}`) {
                     sec.classList.add('content-section-active');
@@ -485,8 +492,7 @@
                 }
             });
 
-            // Update Sidebar Active state
-            currentSidebarItems.forEach(item => {
+            allSidebarItems.forEach(item => {
                 if (item.getAttribute('data-page') === pageId) {
                     item.classList.add('sidebar-item-active');
                 } else {
@@ -494,43 +500,22 @@
                 }
             });
 
-            // Update Breadcrumb
-            const activeLinkTitle = Array.from(currentSidebarItems).find(i => i.getAttribute('data-page') === pageId)?.textContent.trim() || '홈';
+            const activeLinkTitle = Array.from(allSidebarItems).find(i => i.getAttribute('data-page') === pageId)?.textContent.trim() || '홈';
             crumbCurrent.textContent = activeLinkTitle;
             
-            // Re-render manager list if on home
             if (pageId === 'home') renderPageList();
 
-            // Close Mobile Sidebar
-            if (window.innerWidth < 1024) {
-                toggleSidebar(false);
-            }
+            if (window.innerWidth < 1024) toggleSidebar(false);
         }
 
-        // Handle URL Hash change
-        window.addEventListener('hashchange', () => {
-            const hash = window.location.hash.replace('#', '') || 'home';
-            navigateTo(hash);
-        });
+        window.addEventListener('hashchange', () => navigateTo(window.location.hash.replace('#', '') || 'home'));
+        navTriggers.forEach(t => t.addEventListener('click', () => window.location.hash = t.getAttribute('data-page')));
+        navigateTo(window.location.hash.replace('#', '') || 'home');
 
-        // Click listeners for direct triggers (cards, etc.)
-        navTriggers.forEach(t => {
-            t.addEventListener('click', () => {
-                const pageId = t.getAttribute('data-page');
-                window.location.hash = pageId;
-            });
-        });
-
-        // Initial Load
-        const initialHash = window.location.hash.replace('#', '') || 'home';
-        navigateTo(initialHash);
-
-
-        // 2. Dark Mode Toggle
+        // Dark Mode
         const themeToggle = document.getElementById('theme-toggle');
         const sunIcon = document.querySelector('.theme-icon-sun');
         const moonIcon = document.querySelector('.theme-icon-moon');
-        
         function applyTheme() {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
@@ -542,122 +527,48 @@
                 moonIcon.classList.add('hidden');
             }
         }
-
         themeToggle.addEventListener('click', () => {
-            if (document.documentElement.classList.contains('dark')) {
-                localStorage.theme = 'light';
-            } else {
-                localStorage.theme = 'dark';
-            }
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
             applyTheme();
         });
         applyTheme();
 
-
-        // 3. Mobile Sidebar Controls
+        // Mobile
         const mobileToggle = document.getElementById('mobile-menu-toggle');
-        const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
-
         function toggleSidebar(show) {
-            if (show) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-            }
+            const sidebar = document.getElementById('sidebar');
+            if (show) { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
+            else { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); }
         }
-
         mobileToggle.addEventListener('click', () => toggleSidebar(true));
         overlay.addEventListener('click', () => toggleSidebar(false));
 
-
-        // 4. Interactive Components (Toggle Block & Copy)
-        document.body.addEventListener('click', (e) => {
-            // Toggle logic
-            if (e.target.closest('.toggle-btn')) {
-                const btn = e.target.closest('.toggle-btn');
-                const content = btn.nextElementSibling;
-                const icon = btn.querySelector('.toggle-icon');
-                
-                content.classList.toggle('hidden');
-                icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
-            }
-
-            // Copy logic
-            if (e.target.closest('.copy-btn')) {
-                const btn = e.target.closest('.copy-btn');
-                const text = btn.getAttribute('data-code');
-                const span = btn.querySelector('span');
-                
-                navigator.clipboard.writeText(text).then(() => {
-                    span.textContent = 'Copied!';
-                    btn.classList.add('text-fresh-blue');
-                    setTimeout(() => {
-                        span.textContent = 'Copy';
-                        btn.classList.remove('text-fresh-blue');
-                    }, 2000);
-                });
-            }
-        });
-
-
-        // Newsletter Manual Tab Logic
-        function openManualTab(evt, tabId) {
-            const contents = document.querySelectorAll('.tab-content-manual');
-            const btns = document.querySelectorAll('.newsletter-manual .tab-btn');
-            
-            contents.forEach(content => {
-                content.classList.add('hidden');
-                content.classList.remove('block');
-            });
-            
-            btns.forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.remove('hidden');
-            document.getElementById(tabId).classList.add('block');
-            evt.currentTarget.classList.add('active');
-        }
-
-        function toggleManualCheck(item) {
-            const checkbox = item.querySelector('.checkbox');
-            checkbox.classList.toggle('checked');
-            checkbox.innerHTML = checkbox.classList.contains('checked') ? '<i data-lucide="check" class="w-4 h-4"></i>' : '';
-            lucide.createIcons();
-        }
-
-        // Dynamic Page Management Logic
-        let dynamicPageIds = []; // Track created IDs locally
+        // Page Builder V2 (Isolated Sandbox)
+        let dynamicPages = [];
 
         function renderPageList() {
             const listContainer = document.getElementById('page-manager-list');
             if (!listContainer) return;
-            
-            const sidebarItems = document.querySelectorAll('.sidebar-item[data-page]');
             listContainer.innerHTML = '';
 
-            sidebarItems.forEach(item => {
-                const id = item.getAttribute('data-page');
-                const title = item.textContent.trim();
-                if (id === 'home' || id === 'theme-toggle') return; // Hide protected
-
+            const allPages = [...staticPages, ...dynamicPages];
+            allPages.forEach(p => {
+                if (p.id === 'home') return;
+                const isDynamic = dynamicPages.some(dp => dp.id === p.id);
                 const card = document.createElement('div');
-                card.className = 'flex items-center justify-between p-3 bg-white dark:bg-gray-800 border dark:border-gray-800 rounded-lg group';
-                
-                const isDynamic = dynamicPageIds.includes(id);
-                
+                card.className = 'flex items-center justify-between p-3 bg-white dark:bg-gray-800 border dark:border-gray-800 rounded-xl';
                 card.innerHTML = `
                     <div class="flex items-center gap-3">
-                        <span class="text-sm font-medium">${title}</span>
-                        ${isDynamic ? '<span class="text-[10px] px-1.5 py-0.5 bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400 rounded">임시</span>' : '<span class="text-[10px] px-1.5 py-0.5 bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400 rounded">저장됨</span>'}
+                        <span class="text-sm font-semibold">${p.title}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded ${isDynamic ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500'}">${isDynamic ? '임시' : '저장됨'}</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                         <button onclick="window.location.hash='${id}'" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
-                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                    <div class="flex gap-1">
+                        <button onclick="window.location.hash='${p.id}'" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded text-gray-400">
+                             <i data-lucide="external-link" class="w-4 h-4"></i>
                         </button>
-                        <button onclick="deletePageRequest('${id}', '${title}', ${isDynamic})" class="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-gray-400 hover:text-red-500 transition-colors">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        <button onclick="deleteMemo('${p.id}', ${isDynamic})" class="p-2 hover:bg-red-50 text-gray-400 hover:text-red-500 rounded">
+                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     </div>
                 `;
@@ -666,90 +577,60 @@
             lucide.createIcons();
         }
 
-        function deletePageRequest(id, title, isDynamic) {
-            if (!confirm(`'${title}' 페이지를 삭제하시겠습니까?`)) return;
-
-            if (isDynamic) {
-                // Remove from DOM immediately
-                const sidebarItem = document.querySelector(`.sidebar-item[data-page="${id}"]`);
-                const contentSection = document.getElementById(`page-${id}`);
-                if (sidebarItem) sidebarItem.remove();
-                if (contentSection) contentSection.remove();
-                dynamicPageIds = dynamicPageIds.filter(pid => pid !== id);
-                
-                if (window.location.hash === `#${id}`) window.location.hash = 'home';
-                renderPageList();
-                alert('임시 페이지가 삭제되었습니다.');
-            } else {
-                // Generate AI persistence request
-                const requestObj = { type: "DELETE_PAGE", data: { id: id, title: title } };
-                const outputContainer = document.getElementById('request-output-container');
-                const outputText = document.getElementById('request-output');
-                outputText.textContent = `@[PERSIST_DELETE_REQUEST]\n${JSON.stringify(requestObj, null, 2)}`;
-                outputContainer.classList.remove('hidden');
-                alert('서버 저장된 페이지입니다. 삭제를 확정하려면 생성된 코드를 AI에게 보내주세요.');
-            }
-        }
-
         function createNewPageDirectly() {
             const title = document.getElementById('new-page-title').value.trim();
             const icon = document.getElementById('new-page-icon').value.trim() || 'file';
-            const content = document.getElementById('new-page-content').value.trim();
-            const pageId = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') || `page-${Date.now()}`;
+            const html = document.getElementById('new-page-content').value.trim();
+            const id = `memo-${Date.now()}`;
 
-            if (!title || !content) {
-                alert('메뉴 이름과 콘텐츠 내용을 입력해주세요!');
-                return;
-            }
+            if (!title || !html) return alert('제목과 내용을 입력해주세요.');
 
-            // Check if exists
-            if (document.querySelector(`.sidebar-item[data-page="${pageId}"]`)) {
-                alert('동일한 ID 또는 이름을 가진 페이지가 이미 존재합니다.');
-                return;
-            }
+            // Add Sidebar
+            const nav = document.querySelector('nav[role="navigation"]');
+            const link = document.createElement('a');
+            link.href = `#${id}`; link.className = 'sidebar-item'; link.setAttribute('data-page', id);
+            link.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 mr-3 text-gray-400"></i> ${title}`;
+            nav.appendChild(link);
 
-            // 1. Create Sidebar Link
-            const sidebarNav = document.querySelector('nav[role="navigation"]');
-            const newLink = document.createElement('a');
-            newLink.href = `#${pageId}`;
-            newLink.className = 'sidebar-item';
-            newLink.setAttribute('data-page', pageId);
-            newLink.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 mr-3 text-gray-400"></i> ${title}`;
-            sidebarNav.appendChild(newLink);
+            // Add Sandbox Section
+            const contentArea = document.getElementById('content-area');
+            const sec = document.createElement('section');
+            sec.id = `page-${id}`; sec.className = 'content-section max-w-full h-[80vh]';
+            sec.innerHTML = `<iframe srcdoc="${html.replace(/"/g, '&quot;')}" class="w-full h-full border-0 rounded-xl shadow-2xl bg-white"></iframe>`;
+            contentArea.appendChild(sec);
 
-            // 2. Create Content Section
-            const mainContentArea = document.getElementById('content-area');
-            const newSection = document.createElement('section');
-            newSection.id = `page-${pageId}`;
-            newSection.className = 'content-section max-w-4xl mx-auto';
-            newSection.innerHTML = content;
-            mainContentArea.appendChild(newSection);
-
-            // 3. Track as dynamic
-            dynamicPageIds.push(pageId);
-
-            // 4. Initialize & Refresh
+            dynamicPages.push({ id, title, icon, html });
             lucide.createIcons();
             renderPageList();
             
-            // 5. Generate Persistence Code
-            const requestObj = { type: "CREATE_PAGE", data: { id: pageId, title: title, icon: icon, html: content } };
-            const outputContainer = document.getElementById('request-output-container');
-            const outputText = document.getElementById('request-output');
-            outputText.textContent = `@[PERSIST_PAGE_REQUEST]\n${JSON.stringify(requestObj, null, 2)}`;
-            outputContainer.classList.remove('hidden');
+            // Generate Persistence
+            const op = document.getElementById('request-output-container');
+            document.getElementById('request-output').textContent = `@[PERSIST_V2]\n${JSON.stringify({id, title, icon, html}, null, 2)}`;
+            op.classList.remove('hidden');
+            
+            window.location.hash = id;
+        }
 
-            window.location.hash = pageId;
+        function deleteMemo(id, isDynamic) {
+            if (!confirm('정말 삭제하시겠습니까?')) return;
+            if (isDynamic) {
+                document.querySelector(`.sidebar-item[data-page="${id}"]`)?.remove();
+                document.getElementById(`page-${id}`)?.remove();
+                dynamicPages = dynamicPages.filter(p => p.id !== id);
+                if (window.location.hash === `#${id}`) window.location.hash = 'home';
+                renderPageList();
+            } else {
+                document.getElementById('request-output-container').classList.remove('hidden');
+                document.getElementById('request-output').textContent = `@[DELETE_PERSIST]\n{"id": "${id}"}`;
+                alert('저장된 페이지입니다. 삭제 코드를 AI에게 보내주세요.');
+            }
         }
 
         function copyRequestCode() {
-            const text = document.getElementById('request-output').textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('코드가 복사되었습니다! 영구 반영을 위해 AI 채팅창에 보내주세요.');
-            });
+            navigator.clipboard.writeText(document.getElementById('request-output').textContent);
+            alert('복사되었습니다! AI 채팅창에 전달해주세요.');
         }
-        
-        // Final init
+
         renderPageList();
 </script>
 </body>
