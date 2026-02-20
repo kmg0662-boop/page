@@ -197,19 +197,20 @@
                     </div>
                 </div>
 
-                <!-- Page Builder Section -->
+                <!-- Page Builder & Manager Section -->
                 <div class="mt-24 p-8 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="p-2 bg-fresh-blue/10 rounded-lg text-fresh-blue">
-                            <i data-lucide="plus-square" class="w-6 h-6"></i>
+                            <i data-lucide="layout-grid" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold">새 페이지 생성기</h3>
-                            <p class="text-sm text-gray-500">정보를 입력하고 생성된 요청 코드를 AI에게 전달하세요.</p>
+                            <h3 class="text-lg font-bold">페이지 대시보드</h3>
+                            <p class="text-sm text-gray-500">새 페이지를 만들거나 기존 페이지를 관리하세요.</p>
                         </div>
                     </div>
 
-                    <div class="space-y-4">
+                    <!-- Create Form -->
+                    <div class="space-y-4 mb-10 pb-10 border-b dark:border-gray-800">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-bold text-gray-400 uppercase mb-1">메뉴 이름</label>
@@ -225,13 +226,21 @@
                             <textarea id="new-page-content" rows="6" placeholder="<h1 class='notion-h1'>제목</h1><p>내용을 입력하세요...</p>" class="w-full px-4 py-2 rounded-lg border dark:border-gray-800 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-fresh-blue/30 transition-all text-sm font-mono"></textarea>
                         </div>
                         <button onclick="createNewPageDirectly()" class="w-full py-3 bg-gray-900 dark:bg-fresh-blue text-white font-bold rounded-lg hover:opacity-90 transition-all flex items-center justify-center gap-2">
-                            <i data-lucide="zap" class="w-4 h-4"></i>
-                            지금 즉시 페이지 생성하기
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            새 페이지 즉시 생성
                         </button>
                     </div>
 
-                    <div id="request-output-container" class="mt-6 hidden animate-in fade-in slide-in-from-bottom-4">
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">🎉 페이지가 생성되었습니다! 영구 저장을 위해 아래 코드를 AI에게 전달하세요:</label>
+                    <!-- Manage List -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-4">현재 페이지 목록</label>
+                        <div id="page-manager-list" class="space-y-2">
+                            <!-- JS will render this -->
+                        </div>
+                    </div>
+
+                    <div id="request-output-container" class="mt-8 hidden animate-in fade-in slide-in-from-bottom-4">
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">📋 AI 작업 요청 코드 (변경사항 저장용):</label>
                         <div class="relative">
                             <pre id="request-output" class="p-4 bg-gray-900 text-green-400 text-xs rounded-lg overflow-x-auto whitespace-pre-wrap break-all"></pre>
                             <button onclick="copyRequestCode()" class="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 rounded text-gray-400 transition-all">
@@ -488,6 +497,9 @@
             // Update Breadcrumb
             const activeLinkTitle = Array.from(currentSidebarItems).find(i => i.getAttribute('data-page') === pageId)?.textContent.trim() || '홈';
             crumbCurrent.textContent = activeLinkTitle;
+            
+            // Re-render manager list if on home
+            if (pageId === 'home') renderPageList();
 
             // Close Mobile Sidebar
             if (window.innerWidth < 1024) {
@@ -590,7 +602,7 @@
             }
         });
 
-    
+
         // Newsletter Manual Tab Logic
         function openManualTab(evt, tabId) {
             const contents = document.querySelectorAll('.tab-content-manual');
@@ -615,7 +627,70 @@
             lucide.createIcons();
         }
 
-        // Page Builder Logic: Direct Client-Side Creation
+        // Dynamic Page Management Logic
+        let dynamicPageIds = []; // Track created IDs locally
+
+        function renderPageList() {
+            const listContainer = document.getElementById('page-manager-list');
+            if (!listContainer) return;
+            
+            const sidebarItems = document.querySelectorAll('.sidebar-item[data-page]');
+            listContainer.innerHTML = '';
+
+            sidebarItems.forEach(item => {
+                const id = item.getAttribute('data-page');
+                const title = item.textContent.trim();
+                if (id === 'home' || id === 'theme-toggle') return; // Hide protected
+
+                const card = document.createElement('div');
+                card.className = 'flex items-center justify-between p-3 bg-white dark:bg-gray-800 border dark:border-gray-800 rounded-lg group';
+                
+                const isDynamic = dynamicPageIds.includes(id);
+                
+                card.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm font-medium">${title}</span>
+                        ${isDynamic ? '<span class="text-[10px] px-1.5 py-0.5 bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400 rounded">임시</span>' : '<span class="text-[10px] px-1.5 py-0.5 bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400 rounded">저장됨</span>'}
+                    </div>
+                    <div class="flex items-center gap-2">
+                         <button onclick="window.location.hash='${id}'" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="deletePageRequest('${id}', '${title}', ${isDynamic})" class="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-gray-400 hover:text-red-500 transition-colors">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function deletePageRequest(id, title, isDynamic) {
+            if (!confirm(`'${title}' 페이지를 삭제하시겠습니까?`)) return;
+
+            if (isDynamic) {
+                // Remove from DOM immediately
+                const sidebarItem = document.querySelector(`.sidebar-item[data-page="${id}"]`);
+                const contentSection = document.getElementById(`page-${id}`);
+                if (sidebarItem) sidebarItem.remove();
+                if (contentSection) contentSection.remove();
+                dynamicPageIds = dynamicPageIds.filter(pid => pid !== id);
+                
+                if (window.location.hash === `#${id}`) window.location.hash = 'home';
+                renderPageList();
+                alert('임시 페이지가 삭제되었습니다.');
+            } else {
+                // Generate AI persistence request
+                const requestObj = { type: "DELETE_PAGE", data: { id: id, title: title } };
+                const outputContainer = document.getElementById('request-output-container');
+                const outputText = document.getElementById('request-output');
+                outputText.textContent = `@[PERSIST_DELETE_REQUEST]\n${JSON.stringify(requestObj, null, 2)}`;
+                outputContainer.classList.remove('hidden');
+                alert('서버 저장된 페이지입니다. 삭제를 확정하려면 생성된 코드를 AI에게 보내주세요.');
+            }
+        }
+
         function createNewPageDirectly() {
             const title = document.getElementById('new-page-title').value.trim();
             const icon = document.getElementById('new-page-icon').value.trim() || 'file';
@@ -624,6 +699,12 @@
 
             if (!title || !content) {
                 alert('메뉴 이름과 콘텐츠 내용을 입력해주세요!');
+                return;
+            }
+
+            // Check if exists
+            if (document.querySelector(`.sidebar-item[data-page="${pageId}"]`)) {
+                alert('동일한 ID 또는 이름을 가진 페이지가 이미 존재합니다.');
                 return;
             }
 
@@ -637,36 +718,39 @@
             sidebarNav.appendChild(newLink);
 
             // 2. Create Content Section
-            const mainContentArea = document.getElementById('content-area').firstElementChild;
+            const mainContentArea = document.getElementById('content-area');
             const newSection = document.createElement('section');
             newSection.id = `page-${pageId}`;
             newSection.className = 'content-section max-w-4xl mx-auto';
             newSection.innerHTML = content;
-            mainContentArea.parentElement.appendChild(newSection);
+            mainContentArea.appendChild(newSection);
 
-            // 3. Initialize new elements
+            // 3. Track as dynamic
+            dynamicPageIds.push(pageId);
+
+            // 4. Initialize & Refresh
             lucide.createIcons();
+            renderPageList();
             
-            // 4. Generate the Persistence Code (for the AI to save later)
+            // 5. Generate Persistence Code
             const requestObj = { type: "CREATE_PAGE", data: { id: pageId, title: title, icon: icon, html: content } };
             const outputContainer = document.getElementById('request-output-container');
             const outputText = document.getElementById('request-output');
             outputText.textContent = `@[PERSIST_PAGE_REQUEST]\n${JSON.stringify(requestObj, null, 2)}`;
             outputContainer.classList.remove('hidden');
 
-            // 5. Navigate to the new page immediately
             window.location.hash = pageId;
-            
-            // Notification
-            console.log(`Page "${title}" created locally.`);
         }
 
         function copyRequestCode() {
             const text = document.getElementById('request-output').textContent;
             navigator.clipboard.writeText(text).then(() => {
-                alert('코드가 복사되었습니다! 영구 저장을 원하시면 AI 채팅창에 보내주세요.');
+                alert('코드가 복사되었습니다! 영구 반영을 위해 AI 채팅창에 보내주세요.');
             });
         }
+        
+        // Final init
+        renderPageList();
 </script>
 </body>
 </html>
