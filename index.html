@@ -224,14 +224,14 @@
                             <label class="block text-xs font-bold text-gray-400 uppercase mb-1">HTML 콘텐츠 코드</label>
                             <textarea id="new-page-content" rows="6" placeholder="<h1 class='notion-h1'>제목</h1><p>내용을 입력하세요...</p>" class="w-full px-4 py-2 rounded-lg border dark:border-gray-800 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-fresh-blue/30 transition-all text-sm font-mono"></textarea>
                         </div>
-                        <button onclick="generatePageRequest()" class="w-full py-3 bg-gray-900 dark:bg-fresh-blue text-white font-bold rounded-lg hover:opacity-90 transition-all flex items-center justify-center gap-2">
-                            <i data-lucide="send" class="w-4 h-4"></i>
-                            AI 요청 코드 생성하기
+                        <button onclick="createNewPageDirectly()" class="w-full py-3 bg-gray-900 dark:bg-fresh-blue text-white font-bold rounded-lg hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="zap" class="w-4 h-4"></i>
+                            지금 즉시 페이지 생성하기
                         </button>
                     </div>
 
                     <div id="request-output-container" class="mt-6 hidden animate-in fade-in slide-in-from-bottom-4">
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">아래 코드를 복사해서 AI에게 채팅으로 주세요:</label>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">🎉 페이지가 생성되었습니다! 영구 저장을 위해 아래 코드를 AI에게 전달하세요:</label>
                         <div class="relative">
                             <pre id="request-output" class="p-4 bg-gray-900 text-green-400 text-xs rounded-lg overflow-x-auto whitespace-pre-wrap break-all"></pre>
                             <button onclick="copyRequestCode()" class="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 rounded text-gray-400 transition-all">
@@ -464,18 +464,20 @@
         const navTriggers = document.querySelectorAll('.nav-trigger');
 
         function navigateTo(pageId) {
+            const currentSections = document.querySelectorAll('.content-section');
+            const currentSidebarItems = document.querySelectorAll('.sidebar-item[data-page]');
+
             // Update UI: Hide all, Show selected
-            sections.forEach(sec => {
+            currentSections.forEach(sec => {
                 sec.classList.remove('content-section-active');
                 if (sec.id === `page-${pageId}`) {
                     sec.classList.add('content-section-active');
-                    // Scroll to top
                     document.getElementById('content-area').scrollTop = 0;
                 }
             });
 
             // Update Sidebar Active state
-            sidebarItems.forEach(item => {
+            currentSidebarItems.forEach(item => {
                 if (item.getAttribute('data-page') === pageId) {
                     item.classList.add('sidebar-item-active');
                 } else {
@@ -484,7 +486,7 @@
             });
 
             // Update Breadcrumb
-            const activeLinkTitle = Array.from(sidebarItems).find(i => i.getAttribute('data-page') === pageId)?.textContent.trim() || '홈';
+            const activeLinkTitle = Array.from(currentSidebarItems).find(i => i.getAttribute('data-page') === pageId)?.textContent.trim() || '홈';
             crumbCurrent.textContent = activeLinkTitle;
 
             // Close Mobile Sidebar
@@ -613,40 +615,56 @@
             lucide.createIcons();
         }
 
-        // Page Builder Logic
-        function generatePageRequest() {
+        // Page Builder Logic: Direct Client-Side Creation
+        function createNewPageDirectly() {
             const title = document.getElementById('new-page-title').value.trim();
             const icon = document.getElementById('new-page-icon').value.trim() || 'file';
             const content = document.getElementById('new-page-content').value.trim();
-            const pageId = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            const pageId = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '') || `page-${Date.now()}`;
 
             if (!title || !content) {
                 alert('메뉴 이름과 콘텐츠 내용을 입력해주세요!');
                 return;
             }
 
-            const requestObj = {
-                type: "CREATE_PAGE",
-                data: {
-                    id: pageId,
-                    title: title,
-                    icon: icon,
-                    html: content
-                }
-            };
+            // 1. Create Sidebar Link
+            const sidebarNav = document.querySelector('nav[role="navigation"]');
+            const newLink = document.createElement('a');
+            newLink.href = `#${pageId}`;
+            newLink.className = 'sidebar-item';
+            newLink.setAttribute('data-page', pageId);
+            newLink.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 mr-3 text-gray-400"></i> ${title}`;
+            sidebarNav.appendChild(newLink);
 
+            // 2. Create Content Section
+            const mainContentArea = document.getElementById('content-area').firstElementChild;
+            const newSection = document.createElement('section');
+            newSection.id = `page-${pageId}`;
+            newSection.className = 'content-section max-w-4xl mx-auto';
+            newSection.innerHTML = content;
+            mainContentArea.parentElement.appendChild(newSection);
+
+            // 3. Initialize new elements
+            lucide.createIcons();
+            
+            // 4. Generate the Persistence Code (for the AI to save later)
+            const requestObj = { type: "CREATE_PAGE", data: { id: pageId, title: title, icon: icon, html: content } };
             const outputContainer = document.getElementById('request-output-container');
             const outputText = document.getElementById('request-output');
-            
-            outputText.textContent = `@[ADD_PAGE_REQUEST]\n${JSON.stringify(requestObj, null, 2)}`;
+            outputText.textContent = `@[PERSIST_PAGE_REQUEST]\n${JSON.stringify(requestObj, null, 2)}`;
             outputContainer.classList.remove('hidden');
-            outputContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // 5. Navigate to the new page immediately
+            window.location.hash = pageId;
+            
+            // Notification
+            console.log(`Page "${title}" created locally.`);
         }
 
         function copyRequestCode() {
             const text = document.getElementById('request-output').textContent;
             navigator.clipboard.writeText(text).then(() => {
-                alert('요청 코드가 복사되었습니다! 이제 AI 채팅창에 붙여넣어주세요.');
+                alert('코드가 복사되었습니다! 영구 저장을 원하시면 AI 채팅창에 보내주세요.');
             });
         }
 </script>
