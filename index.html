@@ -90,12 +90,20 @@
 </head>
 <body class="flex h-screen overflow-hidden">
 
-    <!-- Mobile Header -->
-    <div class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white/80 dark:bg-[#191919]/80 backdrop-blur-md border-b dark:border-gray-800 z-50 flex items-center px-4">
-        <button id="mobile-menu-toggle" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md" aria-label="메뉴 열기">
-            <i data-lucide="menu" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
-        </button>
-        <span class="ml-3 font-semibold text-gray-700 dark:text-gray-200">Portfolio</span>
+    <!-- Mobile Header (Floating Glass) -->
+    <div class="lg:hidden fixed top-4 left-4 right-4 h-14 bg-white/70 dark:bg-[#1d1d1d]/70 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-lg shadow-black/5 z-50 flex items-center justify-between px-4 rounded-2xl">
+        <div class="flex items-center">
+            <button id="mobile-menu-toggle" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors" aria-label="메뉴 열기">
+                <i data-lucide="menu" class="w-5 h-5 text-gray-600 dark:text-gray-300"></i>
+            </button>
+            <div class="ml-3 flex flex-col">
+                <span class="text-sm font-bold text-gray-800 dark:text-gray-200 leading-tight">Antigravity</span>
+                <span class="text-[9px] text-fresh-blue font-bold uppercase tracking-wider">Engine V2.1</span>
+            </div>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-fresh-blue/10 flex items-center justify-center text-fresh-blue">
+            <i data-lucide="zap" class="w-4 h-4"></i>
+        </div>
     </div>
 
     <!-- Sidebar -->
@@ -112,21 +120,18 @@
         </div>
 
         <!-- Navigation Links -->
-        <nav class="flex-1 px-3 space-y-0.5 overflow-y-auto" role="navigation">
-            <div class="text-[11px] font-bold text-gray-400 dark:text-gray-500 px-3 py-3 uppercase tracking-widest">포트폴리오</div>
+        <nav class="flex-1 px-3 space-y-1 overflow-y-auto" role="navigation">
+            <div class="text-[10px] font-bold text-gray-400 dark:text-gray-500 px-4 py-4 uppercase tracking-[0.2em]">Management</div>
             
             <a href="#home" class="sidebar-item sidebar-item-active" data-page="home">
-                <i data-lucide="home" class="w-4 h-4 mr-3 text-gray-400"></i> 홈
-            </a>
-            <a href="#projects" class="sidebar-item" data-page="projects">
-                <i data-lucide="folder-kanban" class="w-4 h-4 mr-3 text-gray-400"></i> 프로젝트 목록
-            </a>
-            <a href="#github-bot" class="sidebar-item" data-page="github-bot">
-                 <i data-lucide="bot" class="w-4 h-4 mr-3 text-gray-400"></i> GitHub Automation
+                <i data-lucide="layout-dashboard" class="w-4 h-4 mr-3 text-gray-400"></i> 대시보드
             </a>
             <a href="#newsletter-strategy" class="sidebar-item" data-page="newsletter-strategy">
-                <i data-lucide="mail" class="w-4 h-4 mr-3 text-gray-400"></i> 채널(뉴스레터) 전략
+                <i data-lucide="mail" class="w-4 h-4 mr-3 text-gray-400"></i> 뉴스레터 전략
             </a>
+
+            <div class="text-[10px] font-bold text-gray-400 dark:text-gray-500 px-4 py-4 uppercase tracking-[0.2em] mt-4">Pages</div>
+            <!-- Dynamic Pages will appear here -->
         </nav>
 
         <!-- Sidebar Footer -->
@@ -159,97 +164,25 @@
             
             <!-- Home Section -->
             <section id="page-home" class="content-section content-section-active max-w-4xl mx-auto">
-                <div class="text-6xl mb-8 transform hover:scale-110 transition-transform cursor-default inline-block">🚀</div>
+                <div class="mb-10 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-fresh-blue/10 border border-fresh-blue/20 text-fresh-blue text-[10px] font-bold uppercase tracking-widest">
+                    <i data-lucide="sparkles" class="w-3 h-3"></i> System Online
+                </div>
+                
                 <h1 class="notion-h1">Welcome to My Space</h1>
-                <p class="text-xl text-gray-600 dark:text-gray-400 leading-relaxed mb-10 max-w-2xl">
+                <p class="text-xl text-gray-600 dark:text-gray-400 leading-relaxed mb-12 max-w-2xl">
                     세상을 움직이는 청량한 블루 코드를 작성합니다. 
-                    복잡한 문제는 단순하게, 단순한 코드는 아름답게 만드는 것이 저의 철학입니다.
+                    <span class="text-gray-900 dark:text-white font-semibold">복잡한 문제는 단순하게, 단순한 코드는 아름답게</span> 만드는 것이 저의 철학입니다.
                 </p>
 
-                <div class="flex flex-wrap gap-4 mb-16">
-                    <button class="primary-cta nav-trigger" data-page="projects">
-                        프로젝트 둘러보기
-                        <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                    </button>
-                </div>
-
-                <div class="notion-callout bg-fresh-blue/5 border-fresh-blue/10 dark:bg-fresh-blue/10 dark:border-fresh-blue/20">
-                    <div class="text-2xl">⚡</div>
+                <div class="notion-callout bg-fresh-blue/5 border-fresh-blue/10 dark:bg-fresh-blue/10 dark:border-fresh-blue/20 mb-20">
+                    <div class="text-fresh-blue">
+                        <i data-lucide="lightbulb" class="w-6 h-6"></i>
+                    </div>
                     <div class="text-sm text-gray-700 dark:text-gray-300">
-                        <p class="font-bold mb-1 text-fresh-blue uppercase italic tracking-wider">Insight</p>
+                        <p class="font-bold mb-1 text-fresh-blue uppercase italic tracking-wider">Design Principle</p>
                         불필요한 기능은 덜어내고, 본질에 집중할 때 가장 강력한 사용자 경험이 탄생합니다.
                     </div>
                 </div>
-
-                <h2 class="notion-h2">최근 기록</h2>
-                <div class="space-y-4">
-                    <div class="flex items-start gap-4">
-                        <div class="w-1.5 h-1.5 rounded-full bg-fresh-blue mt-2.5 shrink-0"></div>
-                        <p class="text-gray-700 dark:text-gray-300">노션의 직관적인 SPA 라우팅 시스템 설계 및 구현</p>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="w-1.5 h-1.5 rounded-full bg-fresh-blue mt-2.5 shrink-0"></div>
-                        <p class="text-gray-700 dark:text-gray-300">Tailwind CSS v4 기반의 다크모드 최적화 완료</p>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="w-1.5 h-1.5 rounded-full bg-fresh-blue mt-2.5 shrink-0"></div>
-                        <p class="text-gray-700 dark:text-gray-300">사용자 경험(UX) 원칙에 기반한 인터페이스 오딧 수행</p>
-                    </div>
-                </div>
-
-                <!-- Page Builder & Manager Section -->
-                <div class="mt-24 p-8 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="p-2 bg-fresh-blue/10 rounded-lg text-fresh-blue">
-                            <i data-lucide="layout-grid" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold">페이지 대시보드</h3>
-                            <p class="text-sm text-gray-500">새 페이지를 만들거나 기존 페이지를 관리하세요.</p>
-                        </div>
-                    </div>
-
-                    <!-- Create Form -->
-                    <div class="space-y-4 mb-10 pb-10 border-b dark:border-gray-800">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">메뉴 이름</label>
-                                <input type="text" id="new-page-title" placeholder="예: 나의 일기" class="w-full px-4 py-2 rounded-lg border dark:border-gray-800 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-fresh-blue/30 transition-all text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">아이콘 (Lucide 이름)</label>
-                                <input type="text" id="new-page-icon" placeholder="예: book, star, zap" class="w-full px-4 py-2 rounded-lg border dark:border-gray-800 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-fresh-blue/30 transition-all text-sm">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">HTML 콘텐츠 코드</label>
-                            <textarea id="new-page-content" rows="6" placeholder="<h1 class='notion-h1'>제목</h1><p>내용을 입력하세요...</p>" class="w-full px-4 py-2 rounded-lg border dark:border-gray-800 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-fresh-blue/30 transition-all text-sm font-mono"></textarea>
-                        </div>
-                        <button onclick="createNewPageDirectly()" class="w-full py-3 bg-gray-900 dark:bg-fresh-blue text-white font-bold rounded-lg hover:opacity-90 transition-all flex items-center justify-center gap-2">
-                            <i data-lucide="plus" class="w-4 h-4"></i>
-                            새 페이지 즉시 생성
-                        </button>
-                    </div>
-
-                    <!-- Manage List -->
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-4">현재 페이지 목록</label>
-                        <div id="page-manager-list" class="space-y-2">
-                            <!-- JS will render this -->
-                        </div>
-                    </div>
-
-                    <div id="request-output-container" class="mt-8 hidden animate-in fade-in slide-in-from-bottom-4">
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">📋 AI 작업 요청 코드 (변경사항 저장용):</label>
-                        <div class="relative">
-                            <pre id="request-output" class="p-4 bg-gray-900 text-green-400 text-xs rounded-lg overflow-x-auto whitespace-pre-wrap break-all"></pre>
-                            <button onclick="copyRequestCode()" class="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 rounded text-gray-400 transition-all">
-                                <i data-lucide="copy" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
                 <!-- Page Dashboard -->
                 <div id="memo-dashboard" class="mt-24 p-8 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
@@ -307,11 +240,15 @@
 
             <!-- Newsletter Strategy Section -->
             <section id="page-newsletter-strategy" class="content-section max-w-4xl mx-auto newsletter-manual">
-                <div class="text-6xl mb-8">📬</div>
+                <div class="p-4 bg-fresh-blue/10 rounded-2xl w-20 h-20 flex items-center justify-center text-fresh-blue mb-8">
+                    <i data-lucide="mail" class="w-10 h-10"></i>
+                </div>
                 <h1 class="notion-h1">뉴키즈 뉴스레터 통합 매뉴얼 (v14.2)</h1>
-                <div class="text-sm text-gray-500 mb-8">Last Updated: 2026.02.20 | Start: 2026.03</div>
+                <div class="text-sm text-gray-500 mb-8 border-l-2 border-fresh-blue pl-4">
+                    Last Updated: 2026.02.20 | Start: 2026.03
+                </div>
 
-                <div class="tabs flex border-b dark:border-gray-800 mb-8 overflow-x-auto">
+                <div class="tabs flex border-b dark:border-gray-800 mb-8 overflow-x-auto no-scrollbar">
                     <button class="tab-btn active" onclick="openManualTab(event, 'manual-tab1')">1. 전략 (Strategy)</button>
                     <button class="tab-btn" onclick="openManualTab(event, 'manual-tab2')">2. 운영 (Operation)</button>
                     <button class="tab-btn" onclick="openManualTab(event, 'manual-tab3')">3. 작성 (Writing)</button>
@@ -359,9 +296,11 @@
                 <!-- Tab 2: Operation -->
                 <div id="manual-tab2" class="tab-content-manual hidden">
                     <div class="callout blue">
-                        <div class="text-2xl">📆</div>
-                        <div>
-                            <strong>2026년 3월 Start! (A팀부터)</strong><br>
+                        <div class="text-fresh-blue">
+                             <i data-lucide="calendar-days" class="w-6 h-6"></i>
+                        </div>
+                        <div class="text-sm">
+                            <strong class="block mb-1">2026년 3월 Start! (A팀부터)</strong>
                             3개월에 1번만 메인 Writer가 됩니다. 나머지 2달은 <strong>완전 휴식(Zero Burden)</strong>입니다.
                         </div>
                     </div>
