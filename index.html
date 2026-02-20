@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio | Notion Style</title>
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'fresh-blue': '#0077ff',
+                        'fresh-blue-hover': '#0066dd',
+                        'notion-bg-light': '#ffffff',
+                        'notion-bg-dark': '#191919',
+                        'notion-sidebar-light': '#fbfbfa',
+                        'notion-sidebar-dark': '#202020',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer base {
+            body { @apply font-sans antialiased text-gray-900 bg-notion-bg-light transition-colors duration-200 dark:text-gray-100 dark:bg-notion-bg-dark; }
+        }
+        @layer components {
+            .sidebar-item { @apply flex items-center px-3 py-2.5 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-100 cursor-pointer transition-all dark:text-gray-400 dark:hover:bg-gray-800; }
+            .sidebar-item-active { @apply bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white; }
+            .content-section { @apply hidden opacity-0 transition-opacity duration-300; }
+            .content-section-active { @apply block opacity-100; }
+            .notion-h1 { @apply text-4xl md:text-5xl font-bold mb-6 mt-8 border-b pb-4 dark:border-gray-800 tracking-tight; }
+            .notion-h2 { @apply text-2xl font-bold mb-4 mt-12; }
+            .notion-h3 { @apply text-xl font-semibold mb-3 mt-8; }
+            .notion-blockquote { @apply border-l-4 border-fresh-blue pl-4 py-1 italic my-6 text-gray-700 dark:text-gray-300; }
+            .notion-callout { @apply flex gap-4 p-5 rounded-lg bg-blue-50 border border-blue-100 dark:bg-blue-900/20 dark:border-blue-800/30 my-6; }
+            .primary-cta { @apply inline-flex items-center px-6 py-3 bg-fresh-blue text-white font-semibold rounded-lg hover:bg-fresh-blue-hover transition-all active:scale-95 shadow-lg shadow-blue-500/20; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { @apply bg-transparent; }
+        ::-webkit-scrollbar-thumb { @apply bg-gray-300 rounded-full hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600; }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <!-- Mobile Header -->
+    <div class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white/80 dark:bg-[#191919]/80 backdrop-blur-md border-b dark:border-gray-800 z-50 flex items-center px-4">
+        <button id="mobile-menu-toggle" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md" aria-label="메뉴 열기">
+            <i data-lucide="menu" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
+        </button>
+        <span class="ml-3 font-semibold text-gray-700 dark:text-gray-200">Portfolio</span>
+    </div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 md:w-72 bg-notion-sidebar-light dark:bg-notion-sidebar-dark border-r dark:border-gray-800 transition-transform -translate-x-full lg:translate-x-0 lg:static flex flex-col pt-16 lg:pt-0">
+        <!-- User Profile -->
+        <div class="px-5 py-6 flex items-center space-x-3 mb-2">
+            <div class="w-9 h-9 rounded-lg bg-fresh-blue flex items-center justify-center text-white text-sm font-bold shadow-inner">
+                GP
+            </div>
+            <div class="flex flex-col">
+                <span class="text-sm font-bold truncate dark:text-gray-200 uppercase tracking-tight">Antigravity</span>
+                <span class="text-[10px] text-gray-400 font-medium">Engineer & Designer</span>
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="flex-1 px-3 space-y-0.5 overflow-y-auto" role="navigation">
+            <div class="text-[11px] font-bold text-gray-400 dark:text-gray-500 px-3 py-3 uppercase tracking-widest">포트폴리오</div>
+            
+            <a href="#home" class="sidebar-item sidebar-item-active" data-page="home">
+                <i data-lucide="home" class="w-4 h-4 mr-3 text-gray-400"></i> 홈
+            </a>
+            <a href="#projects" class="sidebar-item" data-page="projects">
+                <i data-lucide="folder-kanban" class="w-4 h-4 mr-3 text-gray-400"></i> 프로젝트 목록
+            </a>
+            <a href="#github-bot" class="sidebar-item" data-page="github-bot">
+                 <i data-lucide="bot" class="w-4 h-4 mr-3 text-gray-400"></i> GitHub Automation
+            </a>
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div class="p-4 border-t dark:border-gray-800 space-y-1">
+            <button id="theme-toggle" class="sidebar-item w-full" aria-label="테마 전환">
+                <i data-lucide="sun" class="w-4 h-4 mr-3 theme-icon-sun"></i>
+                <i data-lucide="moon" class="w-4 h-4 mr-3 theme-icon-moon hidden"></i>
+                <span class="text-xs">라이트/다크 모드</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full bg-notion-bg-light dark:bg-notion-bg-dark overflow-hidden relative">
+        
+        <!-- Top bar / Breadcrumbs -->
+        <header class="h-14 flex items-center justify-between px-6 sticky top-0 bg-white/5 dark:bg-[#191919]/5 backdrop-blur-md z-10 transition-colors">
+            <div class="flex items-center text-xs text-gray-400 dark:text-gray-500">
+                <i data-lucide="file-text" class="w-3.5 h-3.5 mr-2"></i>
+                <nav id="breadcrumbs" class="flex items-center uppercase tracking-tighter">
+                    <span class="hover:text-gray-900 dark:hover:text-white cursor-pointer transition-colors">Portfolio</span>
+                    <i data-lucide="chevron-right" class="w-3 h-3 mx-2 opacity-30"></i>
+                    <span id="current-page-crumb" class="text-gray-900 dark:text-white font-bold">홈</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Scrollable Content Area -->
+        <div id="content-area" class="flex-1 overflow-y-auto px-6 md:px-16 lg:px-24 py-16 scroll-smooth">
+            
+            <!-- Home Section -->
+            <section id="page-home" class="content-section content-section-active max-w-4xl mx-auto">
+                <div class="text-6xl mb-8 transform hover:scale-110 transition-transform cursor-default inline-block">🚀</div>
+                <h1 class="notion-h1">Welcome to My Space</h1>
+                <p class="text-xl text-gray-600 dark:text-gray-400 leading-relaxed mb-10 max-w-2xl">
+                    세상을 움직이는 청량한 블루 코드를 작성합니다. 
+                    복잡한 문제는 단순하게, 단순한 코드는 아름답게 만드는 것이 저의 철학입니다.
+                </p>
+
+                <div class="flex flex-wrap gap-4 mb-16">
+                    <button class="primary-cta nav-trigger" data-page="projects">
+                        프로젝트 둘러보기
+                        <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                    </button>
+                </div>
+
+                <div class="notion-callout bg-fresh-blue/5 border-fresh-blue/10 dark:bg-fresh-blue/10 dark:border-fresh-blue/20">
+                    <div class="text-2xl">⚡</div>
+                    <div class="text-sm text-gray-700 dark:text-gray-300">
+                        <p class="font-bold mb-1 text-fresh-blue uppercase italic tracking-wider">Insight</p>
+                        불필요한 기능은 덜어내고, 본질에 집중할 때 가장 강력한 사용자 경험이 탄생합니다.
+                    </div>
+                </div>
+
+                <h2 class="notion-h2">최근 기록</h2>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-1.5 h-1.5 rounded-full bg-fresh-blue mt-2.5 shrink-0"></div>
+                        <p class="text-gray-700 dark:text-gray-300">노션의 직관적인 SPA 라우팅 시스템 설계 및 구현</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-1.5 h-1.5 rounded-full bg-fresh-blue mt-2.5 shrink-0"></div>
+                        <p class="text-gray-700 dark:text-gray-300">Tailwind CSS v4 기반의 다크모드 최적화 완료</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-1.5 h-1.5 rounded-full bg-fresh-blue mt-2.5 shrink-0"></div>
+                        <p class="text-gray-700 dark:text-gray-300">사용자 경험(UX) 원칙에 기반한 인터페이스 오딧 수행</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="page-projects" class="content-section max-w-4xl mx-auto">
+                <h1 class="notion-h1">프로젝트 목록</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+                    <div class="group p-4 rounded-xl border dark:border-gray-800 hover:border-fresh-blue dark:hover:border-fresh-blue hover:shadow-lg transition-all cursor-pointer bg-white dark:bg-[#202020] nav-trigger" data-page="github-bot">
+                        <div class="text-3xl mb-3">🤖</div>
+                        <h3 class="font-bold text-lg group-hover:text-fresh-blue transition-colors">GitHub Automation Bot</h3>
+                        <p class="text-sm text-gray-500 mt-2">Issue 및 PR을 자동으로 분석하여 라벨링하는 고도화된 봇</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- GitHub Bot Detail -->
+            <section id="page-github-bot" class="content-section max-w-4xl mx-auto">
+                <div class="p-4 bg-gray-50 dark:bg-gray-800/30 rounded-lg mb-8 inline-flex items-center text-sm text-gray-500">
+                    <i data-lucide="calendar" class="w-4 h-4 mr-2"></i> 2025년 2월 완성
+                </div>
+                <h1 class="notion-h1">GitHub Automation Bot</h1>
+                <p class="text-gray-700 dark:text-gray-300 mb-6">
+                    이 프로젝트는 오픈소스 규모가 커짐에 따라 발생하는 관리 비용을 줄이기 위해 시작되었습니다. 
+                </p>
+                
+                <!-- Toggle Block Example -->
+                <div class="border-l-2 border-gray-200 dark:border-gray-800 pl-4 my-6">
+                    <button class="toggle-btn flex items-center gap-2 font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 rounded px-2 py-1 -ml-2 transition-colors">
+                        <i data-lucide="chevron-right" class="w-4 h-4 transition-transform toggle-icon"></i>
+                        핵심 기술 스택 펼쳐보기
+                    </button>
+                    <div class="toggle-content hidden mt-2 pl-4 text-sm text-gray-600 dark:text-gray-400">
+                        <ul class="list-disc space-y-1">
+                            <li>Node.js / TypeScript</li>
+                            <li>GitHub Desktop API</li>
+                            <li>OpenAI API (GPT-4o)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 class="notion-h2">구현 방식</h2>
+                <div class="bg-notion-sidebar-light dark:bg-notion-sidebar-dark rounded-lg border dark:border-gray-800 overflow-hidden my-4">
+                    <div class="flex items-center justify-between px-4 py-2 bg-gray-100 dark:bg-gray-800 border-b dark:border-gray-800">
+                        <span class="text-xs font-mono text-gray-500">github-bot.ts</span>
+                        <button class="copy-btn hover:text-fresh-blue flex items-center gap-1 text-xs" data-code="async function analyzeIssue(issueId: string) {\n  const content = await fetchIssue(issueId);\n  return await ai.classify(content);\n}">
+                            <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span>
+                        </button>
+                    </div>
+                    <pre class="p-4 text-sm font-mono overflow-x-auto text-blue-600 dark:text-blue-400">async function analyzeIssue(issueId: string) {
+  const content = await fetchIssue(issueId);
+  return await ai.classify(content);
+}</pre>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer status bar (optional) -->
+        <footer class="h-8 border-t dark:border-gray-800 flex items-center px-4 justify-between bg-white dark:bg-[#191919] text-[10px] text-gray-400">
+            <div class="flex items-center gap-3">
+                <span class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 mr-1 text-green-500"></i> Up to date</span>
+                <span>Language: Korean, English</span>
+            </div>
+            <div>Built with Antigravity AI</div>
+        </footer>
+    </main>
+
+    <!-- Overlay for mobile menu -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden"></div>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // 1. Navigation & Routing (SPA Logic)
+        const sidebarItems = document.querySelectorAll('.sidebar-item[data-page]');
+        const sections = document.querySelectorAll('.content-section');
+        const crumbCurrent = document.querySelector('#current-page-crumb');
+        const navTriggers = document.querySelectorAll('.nav-trigger');
+
+        function navigateTo(pageId) {
+            // Update UI: Hide all, Show selected
+            sections.forEach(sec => {
+                sec.classList.remove('content-section-active');
+                if (sec.id === `page-${pageId}`) {
+                    sec.classList.add('content-section-active');
+                    // Scroll to top
+                    document.getElementById('content-area').scrollTop = 0;
+                }
+            });
+
+            // Update Sidebar Active state
+            sidebarItems.forEach(item => {
+                if (item.getAttribute('data-page') === pageId) {
+                    item.classList.add('sidebar-item-active');
+                } else {
+                    item.classList.remove('sidebar-item-active');
+                }
+            });
+
+            // Update Breadcrumb
+            const activeLinkTitle = Array.from(sidebarItems).find(i => i.getAttribute('data-page') === pageId)?.textContent.trim() || '홈';
+            crumbCurrent.textContent = activeLinkTitle;
+
+            // Close Mobile Sidebar
+            if (window.innerWidth < 1024) {
+                toggleSidebar(false);
+            }
+        }
+
+        // Handle URL Hash change
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.replace('#', '') || 'home';
+            navigateTo(hash);
+        });
+
+        // Click listeners for direct triggers (cards, etc.)
+        navTriggers.forEach(t => {
+            t.addEventListener('click', () => {
+                const pageId = t.getAttribute('data-page');
+                window.location.hash = pageId;
+            });
+        });
+
+        // Initial Load
+        const initialHash = window.location.hash.replace('#', '') || 'home';
+        navigateTo(initialHash);
+
+
+        // 2. Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.querySelector('.theme-icon-sun');
+        const moonIcon = document.querySelector('.theme-icon-moon');
+        
+        function applyTheme() {
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.theme = 'light';
+            } else {
+                localStorage.theme = 'dark';
+            }
+            applyTheme();
+        });
+        applyTheme();
+
+
+        // 3. Mobile Sidebar Controls
+        const mobileToggle = document.getElementById('mobile-menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+
+        function toggleSidebar(show) {
+            if (show) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        mobileToggle.addEventListener('click', () => toggleSidebar(true));
+        overlay.addEventListener('click', () => toggleSidebar(false));
+
+
+        // 4. Interactive Components (Toggle Block & Copy)
+        document.body.addEventListener('click', (e) => {
+            // Toggle logic
+            if (e.target.closest('.toggle-btn')) {
+                const btn = e.target.closest('.toggle-btn');
+                const content = btn.nextElementSibling;
+                const icon = btn.querySelector('.toggle-icon');
+                
+                content.classList.toggle('hidden');
+                icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
+            }
+
+            // Copy logic
+            if (e.target.closest('.copy-btn')) {
+                const btn = e.target.closest('.copy-btn');
+                const text = btn.getAttribute('data-code');
+                const span = btn.querySelector('span');
+                
+                navigator.clipboard.writeText(text).then(() => {
+                    span.textContent = 'Copied!';
+                    btn.classList.add('text-fresh-blue');
+                    setTimeout(() => {
+                        span.textContent = 'Copy';
+                        btn.classList.remove('text-fresh-blue');
+                    }, 2000);
+                });
+            }
+        });
+
+    </script>
+</body>
+</html>
